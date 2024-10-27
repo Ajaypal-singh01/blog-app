@@ -1,11 +1,10 @@
 // components/Navbar.js
 "use client";
-
+import React,{useEffect,useState} from "react";
 import Link from "next/link";
-
+import LoadingBar from 'react-top-loading-bar'
 import { cn } from "@/lib/utils"; // Import utility function
 import { Button } from "./ui/button";
-
 import {
     Sheet,
     SheetClose,
@@ -17,10 +16,22 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { ModeToggle } from "./theme-btn";
+import { usePathname } from "next/navigation";
 
 
 
 export default function Navbar() {
+    const [progress, setProgress] = useState(0);
+    const pathname=usePathname();
+    useEffect(()=>{
+        setProgress(20);
+        setTimeout(() => {
+            setProgress(70);
+        }, 100);
+        setTimeout(() => {
+            setProgress(100)
+        }, 400);
+    },[pathname])
     
     return (
         <header
@@ -28,9 +39,14 @@ export default function Navbar() {
                 "fixed top-0 w-full backdrop-blur bg-background/50 shadow-md z-50"
             )}
         >
+            <LoadingBar
+        color='#f11946'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Logo */}
-                <Link href="/" className="text-xl font-bold">
+                <Link  href="/" className="text-xl font-bold">
                     SinghBlog
                 </Link>
 
@@ -38,10 +54,10 @@ export default function Navbar() {
                 <div className="flex items-center space-x-4 ">
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-6 items-center ">
-                        <Link className=" hover:scale-110 transition-transform duration-300" href="/">Home</Link>
-                        <Link className=" hover:scale-110 transition-transform duration-300" href="/blogs">Blog</Link>
-                        <Link className=" hover:scale-110 transition-transform duration-300" href="/about">About</Link>
-                        <Link className=" hover:scale-110 transition-transform duration-300" href="/contact">Contact</Link>
+                        <Link className=" hover:scale-110 transition-transform duration-300" href="/" >Home</Link>
+                        <Link className=" hover:scale-110 transition-transform duration-300" href="/blogs" >Blog</Link>
+                        <Link className=" hover:scale-110 transition-transform duration-300" href="/about" >About</Link>
+                        <Link className=" hover:scale-110 transition-transform duration-300" href="/contact" >Contact</Link>
                         <div className="flex items-center gap-x-1">
                             <Button  variant="outline">Login</Button>
                             <Button  variant="outline">SignUp</Button>
